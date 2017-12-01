@@ -1,0 +1,8 @@
+FROM haproxy:1.6
+RUN echo 'Acquire::http::Proxy "http://squid.auckland.ac.nz:3128";' > /etc/apt/apt.conf
+RUN apt-get update && \
+    apt-get install -y curl --no-install-recommends && \
+    apt-get install -y telnet --no-install-recommends && \
+    apt-get install -y vim --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
+

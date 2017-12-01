@@ -1,0 +1,27 @@
+Build container:
+docker build -f docker/Dockerfile_1.7 -t registry.dev.container.auckland.ac.nz:5000/mfel395/jhub_haproxy:1.7 .
+
+Launch haproxy container:
+docker run -d --restart always \
+  --name haproxy \
+  --net=host \
+  -p 80:80 \
+  -p 8080:8080 \
+  -v ./server_mappings:/root/haproxy_server_mappings \
+  -v ./etc/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro \
+  registry.dev.container.auckland.ac.nz:5000/mfel395/jhub_haproxy:1.7
+
+Stop and remove haproxy container:
+docker stop haproxy && docker rm haproxy
+
+haproxy Dockerfile:
+https://hub.docker.com/_/haproxy/
+
+Reload configuration file after making changes or after adding users to server_mappings:
+docker kill -s HUP haproxy
+
+IMPORTANT NOTE:
+If you edit the configuration file and run docker kill -s HUP haproxy and the changes don't take effect:
+Perhaps you have edited with vi/vim. vim will create a new inode when saving the file, which means the
+changes won't make it into the container.
+Solution: Either edit the file with nano, or add the following to ~/.vimrc: set backupcopy=yes

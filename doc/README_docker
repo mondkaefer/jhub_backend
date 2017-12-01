@@ -1,0 +1,22 @@
+Build docker images for the services:
+#####################################
+
+
+
+Other information:
+##################
+
+Install docker on RHEL:
+https://docs.docker.com/engine/installation/linux/rhel/
+
+Configure web proxy server in docker:
+https://docs.docker.com/engine/admin/systemd/
+
+Build and tag container image from Dockerfile:
+docker build -f docker/Dockerfile_0.7.1 -t registry.dev.container.auckland.ac.nz:5000/mfel395/jupyterhub:0.7.1 .
+
+Login to local registry:
+docker login registry.dev.container.auckland.ac.nz:5000
+
+Push tagged container image to registry:
+docker push registry.dev.container.auckland.ac.nz:5000/mfel395/jupyterhub:0.7.1

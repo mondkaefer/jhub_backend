@@ -1,0 +1,44 @@
+Useful iptables commands to be used for testing:
+################################################
+
+# Show iptables rules with rule number for each rule
+iptables -nL --line-numbers
+
+# Insert a rule at a certain line (48 in this example)
+iptables -I INPUT 48 -s 10.10.110.64 -p tcp -m multiport --dports 10000:10004,10200:10204 -m comment --comment "Allow connection from cows" -j ACCEPT
+
+
+Allow/disable access to jupyterhub ports from docker VMs (cows)
+---------------------------------------------------------------
+
+# pre-production cows
+ips="10.10.110.64 10.10.110.65 10.10.110.66"
+
+# prototype cows
+ips="10.10.25.118 10.10.25.121 10.10.25.126 10.10.25.128 10.10.25.245"
+
+hub_ports='10000:10004,10200:10204'
+
+rule_number=48
+
+for ip in ${ips}; do
+  # Insert rule that allows connection
+  iptables -I INPUT ${rule_number} -s ${ip} -p tcp -m multiport --dports ${hub_ports} -m comment --comment "Allow connection from cows" -j ACCEPT 
+  # Delete rule
+  # iptables -D INPUT -s ${ip} -p tcp -m multiport --dports ${hub_ports} -m comment --comment "Allow connection from cows" -j ACCEPT 
+done
+
+
+Allow/disable access to port 80 from frontend apache 
+-----------------------------------------------------
+
+frontend_server=130.216.152.89
+port=80
+rule_number=48
+
+# Insert rule that allows connection
+iptables -I INPUT ${rule_number} -s ${frontend_server} -p tcp -m multiport --dports ${port} -m comment --comment "Allow connection from frontend server" -j ACCEPT
+
+# Delete rule
+iptables -D INPUT -s ${rule_number} -p tcp -m multiport --dports ${port} -m comment --comment "Allow connection from frontend server" -j ACCEPT
+

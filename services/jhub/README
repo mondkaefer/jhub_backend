@@ -1,0 +1,18 @@
+Build jupyterhub container image:
+  docker build -f docker/Dockerfile_0.7.2 -t registry.dev.container.auckland.ac.nz:5000/mfel395/jupyterhub:0.7.2 .
+
+Run jupyterhub container:
+  ./bin/manage_hubs.sh 
+
+Log into jupyterhub container:
+  docker exec -it jhub /bin/bash
+
+Stop and remove jhub container:
+  docker stop jhub && docker rm jhub
+
+JupyterHub base Dockerfile:
+https://hub.docker.com/r/jupyterhub/jupyterhub/~/dockerfile/
+
+Notes on ports:
+The web ui listens on 10000, the API listens on 10200
+The proxy api listens on 10100. This one is not really used, but because we run --net=host the ports need to be different for each hub to avoid port collisions

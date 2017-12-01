@@ -1,0 +1,15 @@
+Build container:
+docker build -f docker/Dockerfile -t registry.dev.container.auckland.ac.nz:5000/mfel395/jhub_nbs_mon:1.0 .
+
+Launch monitor:
+touch /var/log/nbs_status.txt
+touch /var/log/nbs_monitor.log
+docker run -d --restart always --name nb_mon \
+  -v /var/log/nbs_status.txt:/root/nbs_status.txt \
+  -v /var/log/nbs_monitor.log:/root/nbs_monitor.log \
+  -v ./conf/config.ini:/etc/nbs_mon.ini \
+  registry.dev.container.auckland.ac.nz:5000/mfel395/jhub_nbs_mon:1.0
+
+Stop and remove notebook server monitor container:
+docker stop nb_mon && docker rm nb_mon
+

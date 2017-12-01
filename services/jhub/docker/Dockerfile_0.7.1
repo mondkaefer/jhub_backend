@@ -1,0 +1,16 @@
+FROM jupyterhub/jupyterhub:0.7.1
+COPY src /root/src
+ENV http_proxy http://squid.auckland.ac.nz:3128
+ENV https_proxy http://squid.auckland.ac.nz:3128
+RUN apt-get -y update && \
+    apt-get -y install curl telnet && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo "Pacific/Auckland" > /etc/timezone && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    pip install --upgrade pip && \
+    cd /root/src/jhub_remote_user_authenticator && \
+    pip install . && \
+    cd /root/src/jhub_rancher_spawner && \
+    pip install -U -r requirements.txt .
+CMD ["jupyterhub", "--no-ssl", "--config=/srv/jupyterhub/jupyterhub_config.py", "--log-file=/srv/jupyterhub/jupyterhub.log", "--log-level=DEBUG"]
