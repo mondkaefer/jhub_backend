@@ -5,7 +5,7 @@ Notebook servers are launched on the Rancher Docker platform.
 Users are pre-authenticated on the frontend Apache server through
 web-SSO (shibboleth).
  
-#Prerequisites:
+# Prerequisites:
 
 * Set the environment variable JHUB_SETUP_DIR and point it to this directory.
 * Install docker in the latest version. See doc/README_docker for tips
@@ -22,7 +22,7 @@ web-SSO (shibboleth).
 * Make sure the local firewall allows connections from the frontend server
   and from the docker VMs (cows) as described in doc/README_iptables
 
-#Start and stop services:
+# Start and stop services:
 
 Launch services by e.g. calling
 
@@ -39,8 +39,7 @@ bin/manage_service.sh stop lb hub nbmon
 (Find out options by calling bin/manage_service.sh without any options)
 
 
-#Firewall rules for the jupyterhub backend:
-##########################################
+# Firewall rules for the jupyterhub backend:
 
 * The jupyterhub frontend web server must be able to connect to the backend
   on port 80
